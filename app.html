@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Billable — App</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%235b5bf6'/><text x='50' y='70' font-size='58' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'>B</text></svg>">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+
+<!-- ============ AUTH ============ -->
+<div id="authScreen" class="auth-screen">
+  <div class="auth-card">
+    <a class="logo" href="index.html"><span class="logo-mark">B</span> Billable</a>
+    <h1 id="authTitle">Welcome back</h1>
+    <p id="authSub" class="auth-sub">Log in to your workspace</p>
+    <form id="authForm">
+      <div class="field" id="nameField" style="display:none">
+        <label for="authName">Your name</label>
+        <input type="text" id="authName" placeholder="Alex Carter" autocomplete="name">
+      </div>
+      <div class="field" id="bizField" style="display:none">
+        <label for="authBiz">Business name</label>
+        <input type="text" id="authBiz" placeholder="Carter Design Co.">
+      </div>
+      <div class="field">
+        <label for="authEmail">Email</label>
+        <input type="email" id="authEmail" placeholder="you@business.com" required autocomplete="email">
+      </div>
+      <div class="field">
+        <label for="authPass">Password</label>
+        <input type="password" id="authPass" placeholder="••••••••" required minlength="6" autocomplete="current-password">
+      </div>
+      <p class="auth-error" id="authError"></p>
+      <button type="submit" class="btn btn-primary btn-block" id="authSubmit">Log in</button>
+    </form>
+    <p class="auth-switch" id="authSwitch">No account? <a href="#" id="authToggle">Start free</a></p>
+    <button class="btn btn-demo btn-block" id="demoBtn">✨ Explore with demo data</button>
+  </div>
+</div>
+
+<!-- ============ APP SHELL ============ -->
+<div id="appShell" class="app-shell" hidden>
+  <aside class="sidebar">
+    <a class="logo" href="index.html"><span class="logo-mark">B</span> <span class="logo-text">Billable</span></a>
+    <nav class="side-nav">
+      <button class="side-link active" data-view="dashboard">📊 <span>Dashboard</span></button>
+      <button class="side-link" data-view="invoices">🧾 <span>Invoices</span></button>
+      <button class="side-link" data-view="clients">👥 <span>Clients</span></button>
+      <button class="side-link" data-view="settings">⚙️ <span>Settings</span></button>
+    </nav>
+    <div class="side-foot">
+      <div class="plan-chip" id="planChip">Starter plan</div>
+      <button class="side-link" id="logoutBtn">↩ <span>Log out</span></button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <h2 id="viewTitle">Dashboard</h2>
+      <div class="topbar-right">
+        <button class="btn btn-primary" id="newInvoiceBtn">+ New invoice</button>
+        <div class="avatar" id="userAvatar">A</div>
+      </div>
+    </header>
+
+    <!-- DASHBOARD -->
+    <section id="view-dashboard" class="view">
+      <div class="stat-grid">
+        <div class="stat-card">
+          <span class="stat-label">Collected</span>
+          <span class="stat-value green" id="statPaid">$0</span>
+          <span class="stat-sub" id="statPaidCount">0 invoices paid</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Outstanding</span>
+          <span class="stat-value amber" id="statPending">$0</span>
+          <span class="stat-sub" id="statPendingCount">0 awaiting payment</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Overdue</span>
+          <span class="stat-value red" id="statOverdue">$0</span>
+          <span class="stat-sub" id="statOverdueCount">0 past due</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Active clients</span>
+          <span class="stat-value" id="statClients">0</span>
+          <span class="stat-sub">in your client book</span>
+        </div>
+      </div>
+
+      <div class="dash-grid">
+        <div class="panel">
+          <div class="panel-head"><h3>Revenue — last 6 months</h3></div>
+          <canvas id="revChart" height="220"></canvas>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h3>Recent activity</h3></div>
+          <ul class="activity" id="activityList"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- INVOICES -->
+    <section id="view-invoices" class="view" hidden>
+      <div class="toolbar">
+        <input type="search" id="invSearch" class="search" placeholder="Search invoices or clients…">
+        <div class="filters" id="invFilters">
+          <button class="chip active" data-f="all">All</button>
+          <button class="chip" data-f="draft">Draft</button>
+          <button class="chip" data-f="sent">Sent</button>
+          <button class="chip" data-f="paid">Paid</button>
+          <button class="chip" data-f="overdue">Overdue</button>
+        </div>
+      </div>
+      <div class="panel">
+        <table class="table" id="invTable">
+          <thead><tr><th>Invoice</th><th>Client</th><th>Issued</th><th>Due</th><th>Amount</th><th>Status</th><th></th></tr></thead>
+          <tbody id="invBody"></tbody>
+        </table>
+        <div class="empty" id="invEmpty" hidden>
+          <p>🧾</p><h3>No invoices yet</h3><p>Create your first invoice — it takes about 60 seconds.</p>
+          <button class="btn btn-primary" onclick="openInvoiceEditor()">+ New invoice</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- CLIENTS -->
+    <section id="view-clients" class="view" hidden>
+      <div class="toolbar">
+        <input type="search" id="cliSearch" class="search" placeholder="Search clients…">
+        <button class="btn btn-primary" id="newClientBtn">+ Add client</button>
+      </div>
+      <div class="client-grid" id="clientGrid"></div>
+      <div class="empty" id="cliEmpty" hidden>
+        <p>👥</p><h3>No clients yet</h3><p>Add your first client to start invoicing them.</p>
+        <button class="btn btn-primary" onclick="openClientModal()">+ Add client</button>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section id="view-settings" class="view" hidden>
+      <div class="panel settings-panel">
+        <h3>Business profile</h3>
+        <p class="muted">Appears on every invoice you send.</p>
+        <form id="settingsForm" class="settings-form">
+          <div class="field"><label>Business name</label><input id="setBiz" type="text"></div>
+          <div class="field"><label>Your name</label><input id="setName" type="text"></div>
+          <div class="field"><label>Email</label><input id="setEmail" type="email"></div>
+          <div class="field"><label>Address</label><input id="setAddr" type="text" placeholder="123 Main St, Springfield"></div>
+          <div class="field-row">
+            <div class="field"><label>Default currency</label>
+              <select id="setCurrency">
+                <option value="USD">USD — US Dollar</option>
+                <option value="EUR">EUR — Euro</option>
+                <option value="GBP">GBP — British Pound</option>
+                <option value="CAD">CAD — Canadian Dollar</option>
+                <option value="AUD">AUD — Australian Dollar</option>
+                <option value="JPY">JPY — Japanese Yen</option>
+                <option value="INR">INR — Indian Rupee</option>
+              </select>
+            </div>
+            <div class="field"><label>Default tax rate (%)</label><input id="setTax" type="number" min="0" max="100" step="0.1"></div>
+          </div>
+          <button class="btn btn-primary" type="submit">Save changes</button>
+        </form>
+      </div>
+      <div class="panel settings-panel">
+        <h3>Plan</h3>
+        <p class="muted">You're on the <b id="planName">Starter</b> plan.</p>
+        <div class="plan-row">
+          <button class="btn btn-ghost" data-plan="starter">Starter · $0</button>
+          <button class="btn btn-primary" data-plan="pro">Pro · $12/mo</button>
+          <button class="btn btn-ghost" data-plan="business">Business · $29/mo</button>
+        </div>
+        <p class="muted small">Demo checkout — in production this connects to Stripe billing.</p>
+      </div>
+      <div class="panel settings-panel danger-panel">
+        <h3>Data</h3>
+        <button class="btn btn-ghost" id="exportBtn">Export data (JSON)</button>
+        <button class="btn btn-danger" id="resetBtn">Erase workspace</button>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- ============ INVOICE EDITOR ============ -->
+<div class="modal-wrap" id="invoiceModal" hidden>
+  <div class="modal modal-lg">
+    <div class="modal-head">
+      <h3 id="invModalTitle">New invoice</h3>
+      <button class="x" onclick="closeModal('invoiceModal')">✕</button>
+    </div>
+    <form id="invoiceForm" class="modal-body">
+      <div class="field-row">
+        <div class="field">
+          <label>Client</label>
+          <select id="invClient" required></select>
+        </div>
+        <div class="field"><label>Invoice #</label><input id="invNumber" type="text" readonly></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Issue date</label><input id="invIssued" type="date" required></div>
+        <div class="field"><label>Due date</label><input id="invDue" type="date" required></div>
+        <div class="field"><label>Currency</label>
+          <select id="invCurrency">
+            <option>USD</option><option>EUR</option><option>GBP</option><option>CAD</option>
+            <option>AUD</option><option>JPY</option><option>INR</option>
+          </select>
+        </div>
+      </div>
+      <div class="lines-head">
+        <label>Line items</label>
+        <button type="button" class="btn btn-ghost btn-sm" id="addLineBtn">+ Add line</button>
+      </div>
+      <div id="lineItems"></div>
+      <div class="field-row">
+        <div class="field"><label>Tax rate (%)</label><input id="invTax" type="number" min="0" max="100" step="0.1" value="0"></div>
+        <div class="field"><label>Discount (%)</label><input id="invDiscount" type="number" min="0" max="100" step="0.1" value="0"></div>
+      </div>
+      <div class="field"><label>Notes (optional)</label><textarea id="invNotes" rows="2" placeholder="Payment terms, thank-you note…"></textarea></div>
+      <div class="inv-totals">
+        <div><span>Subtotal</span><b id="tSubtotal">$0.00</b></div>
+        <div><span>Tax</span><b id="tTax">$0.00</b></div>
+        <div><span>Discount</span><b id="tDiscount">−$0.00</b></div>
+        <div class="grand"><span>Total due</span><b id="tTotal">$0.00</b></div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('invoiceModal')">Cancel</button>
+        <button type="submit" class="btn btn-ghost" data-save="draft">Save draft</button>
+        <button type="submit" class="btn btn-primary" data-save="sent">Save &amp; mark sent</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ============ CLIENT MODAL ============ -->
+<div class="modal-wrap" id="clientModal" hidden>
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="cliModalTitle">Add client</h3>
+      <button class="x" onclick="closeModal('clientModal')">✕</button>
+    </div>
+    <form id="clientForm" class="modal-body">
+      <div class="field"><label>Client / company name</label><input id="cliName" type="text" required placeholder="Northwind Co."></div>
+      <div class="field"><label>Contact email</label><input id="cliEmail" type="email" required placeholder="accounts@northwind.com"></div>
+      <div class="field"><label>Address (optional)</label><input id="cliAddr" type="text" placeholder="City, Country"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('clientModal')">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save client</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ============ INVOICE PREVIEW ============ -->
+<div class="modal-wrap" id="previewModal" hidden>
+  <div class="modal modal-lg preview-modal">
+    <div class="modal-head no-print">
+      <h3>Invoice preview</h3>
+      <div>
+        <button class="btn btn-primary" onclick="window.print()">⬇ Download PDF / Print</button>
+        <button class="x" onclick="closeModal('previewModal')">✕</button>
+      </div>
+    </div>
+    <div class="modal-body" id="previewBody"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
