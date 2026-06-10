@@ -48,6 +48,7 @@
       <button class="side-link active" data-view="dashboard">📊 <span>Dashboard</span></button>
       <button class="side-link" data-view="invoices">🧾 <span>Invoices</span></button>
       <button class="side-link" data-view="clients">👥 <span>Clients</span></button>
+      <button class="side-link" data-view="insights">💡 <span>Insights</span></button>
       <button class="side-link" data-view="settings">⚙️ <span>Settings</span></button>
     </nav>
     <div class="side-foot">
@@ -136,6 +137,54 @@
       <div class="empty" id="cliEmpty" hidden>
         <p>👥</p><h3>No clients yet</h3><p>Add your first client to start invoicing them.</p>
         <button class="btn btn-primary" onclick="openClientModal()">+ Add client</button>
+      </div>
+    </section>
+
+    <!-- INSIGHTS -->
+    <section id="view-insights" class="view" hidden>
+      <div class="stat-grid">
+        <div class="stat-card">
+          <span class="stat-label">Avg time to get paid</span>
+          <span class="stat-value" id="insAvgDays">—</span>
+          <span class="stat-sub">across paid invoices</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">On-time rate</span>
+          <span class="stat-value green" id="insOnTime">—</span>
+          <span class="stat-sub">paid by the due date</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Projected 30 days</span>
+          <span class="stat-value" id="insProjected">—</span>
+          <span class="stat-sub">expected to land</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Most reliable</span>
+          <span class="stat-value" id="insBestClient" style="font-size:1.2rem">—</span>
+          <span class="stat-sub" id="insBestClientSub">pays fastest</span>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-bottom:18px">
+        <div class="panel-head"><h3>Cash-flow forecast — when open invoices will actually land</h3></div>
+        <canvas id="forecastChart" height="200"></canvas>
+      </div>
+
+      <div class="dash-grid">
+        <div class="panel">
+          <div class="panel-head"><h3>Client reliability</h3></div>
+          <table class="table">
+            <thead><tr><th>Client</th><th>Grade</th><th>Avg days to pay</th><th>On time</th><th>Playbook</th></tr></thead>
+            <tbody id="gradeBody"></tbody>
+          </table>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h3>Open invoices — predicted payment</h3></div>
+          <table class="table">
+            <thead><tr><th>Invoice</th><th>Amount</th><th>Expected</th><th></th></tr></thead>
+            <tbody id="predBody"></tbody>
+          </table>
+        </div>
       </div>
     </section>
 
@@ -265,6 +314,33 @@
       </div>
     </div>
     <div class="modal-body" id="previewBody"></div>
+  </div>
+</div>
+
+<!-- ============ SMART NUDGE ============ -->
+<div class="modal-wrap" id="nudgeModal" hidden>
+  <div class="modal modal-lg">
+    <div class="modal-head">
+      <h3>✉ Smart nudge</h3>
+      <button class="x" onclick="closeModal('nudgeModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="nudge-meta" id="nudgeMeta"></div>
+      <div class="nudge-tones" id="nudgeTones">
+        <button class="chip" data-tone="gentle">😊 Gentle</button>
+        <button class="chip" data-tone="friendly">🙂 Friendly</button>
+        <button class="chip" data-tone="firm">😐 Firm</button>
+        <button class="chip" data-tone="final">📋 Final notice</button>
+      </div>
+      <div class="field"><label>Subject</label><input id="nudgeSubject" type="text"></div>
+      <div class="field"><label>Message — tuned to this client's payment history</label>
+        <textarea id="nudgeBody" rows="11"></textarea></div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" onclick="closeModal('nudgeModal')">Close</button>
+        <button class="btn btn-ghost" id="nudgeCopyBtn">📋 Copy text</button>
+        <a class="btn btn-primary" id="nudgeMailBtn" href="#">Open in email app →</a>
+      </div>
+    </div>
   </div>
 </div>
 

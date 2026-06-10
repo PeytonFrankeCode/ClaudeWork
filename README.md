@@ -14,6 +14,21 @@ and export print-ready PDFs — all from the browser.
 | `css/app.css` | App + invoice document + print styles |
 | `js/app.js` | All application logic (auth, data, charts, CRUD, PDF preview) |
 
+## The differentiator: Payment Intelligence 💡
+
+Every competitor records what happened to your invoices. Billable predicts what
+*will* happen — that's the moat:
+
+- **Client reliability grades (A–D)** — computed from each client's real payment
+  history (average days-to-pay, on-time rate, current overdue exposure), with a
+  playbook tip per client ("safe for bigger projects" → "ask for a deposit")
+- **Predicted payment dates** — every open invoice gets an expected landing date
+  based on how that client has actually paid before, not the date on the invoice
+- **Cash-flow forecast** — a 6-week chart of when money will really arrive
+- **Smart nudges** — one click drafts the follow-up email, tone-escalated
+  (gentle → friendly → firm → final notice) based on days late and client
+  history; copy it or open it straight in your mail app
+
 ## Features
 
 - **Auth** — sign up / log in (client-side, localStorage), plus a one-click demo workspace

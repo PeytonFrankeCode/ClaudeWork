@@ -16,7 +16,7 @@
     <a class="logo" href="index.html"><span class="logo-mark">B</span> Billable</a>
     <div class="nav-links" id="navLinks">
       <a href="#features">Features</a>
-      <a href="#how">How it works</a>
+      <a href="#intelligence">Why Billable</a>
       <a href="#pricing">Pricing</a>
       <a href="#faq">FAQ</a>
     </div>
@@ -33,9 +33,9 @@
   <section class="hero">
     <div class="container hero-grid">
       <div class="hero-copy">
-        <div class="pill">✦ New — automatic overdue reminders</div>
+        <div class="pill">✦ New — Payment Intelligence: know <i>when</i> you'll get paid</div>
         <h1>Invoicing that <span class="grad">pays for itself.</span></h1>
-        <p class="lead">Create polished invoices in under 60 seconds, track every dollar you're owed, and get paid up to 2× faster. Built for freelancers, studios, and small businesses everywhere.</p>
+        <p class="lead">Every invoicing tool tells you what you're owed. Only Billable predicts when it will actually land — and writes the follow-up email for you. Built for freelancers, studios, and small businesses everywhere.</p>
         <div class="hero-actions">
           <a href="app.html#signup" class="btn btn-primary btn-lg">Start invoicing free →</a>
           <a href="#how" class="btn btn-ghost btn-lg">See how it works</a>
@@ -125,6 +125,67 @@
     </div>
   </section>
 
+  <!-- PAYMENT INTELLIGENCE — the moat -->
+  <section class="intel" id="intelligence">
+    <div class="container">
+      <div class="section-head section-head-light">
+        <div class="pill pill-dark">Only on Billable</div>
+        <h2>Other tools record payments.<br>Billable <span class="grad-green">predicts them.</span></h2>
+        <p>Payment Intelligence learns how every client actually behaves — then turns it into decisions you can act on.</p>
+      </div>
+      <div class="intel-grid">
+        <div class="intel-card">
+          <div class="intel-visual">
+            <div class="ig-row"><span class="ig-grade ig-a">A</span><div><b>Northwind Co.</b><small>Pays 5 days early</small></div></div>
+            <div class="ig-row"><span class="ig-grade ig-b">B</span><div><b>Maple &amp; Co</b><small>Avg 4 days late</small></div></div>
+            <div class="ig-row"><span class="ig-grade ig-d">D</span><div><b>Drift Media</b><small>Ask for a deposit</small></div></div>
+          </div>
+          <h3>Client reliability grades</h3>
+          <p>Every client gets an A–D grade from their real payment history — so you know who deserves Net-30 and who needs a deposit, before you take the job.</p>
+        </div>
+        <div class="intel-card">
+          <div class="intel-visual">
+            <div class="ig-forecast">
+              <div style="height:34%"></div><div style="height:72%"></div><div style="height:48%"></div>
+              <div style="height:100%"></div><div style="height:26%"></div><div style="height:58%"></div>
+            </div>
+            <small class="ig-caption">Expected cash, next 6 weeks</small>
+          </div>
+          <h3>Cash-flow you can see coming</h3>
+          <p>Billable forecasts the week each open invoice will actually land — not the week it's due. Plan rent, payroll, and slow months with real numbers.</p>
+        </div>
+        <div class="intel-card">
+          <div class="intel-visual">
+            <div class="ig-email">
+              <div class="ig-tones"><span>😊</span><span class="on">😐 Firm</span><span>📋</span></div>
+              <p>"Following up on invoice INV-1049, now <b>6 days past due</b>. Please arrange payment within 5 business days…"</p>
+            </div>
+          </div>
+          <h3>Nudges that write themselves</h3>
+          <p>One click drafts the awkward follow-up email for you — tone-matched to how late the client is and how they've behaved before. Copy, send, get paid.</p>
+        </div>
+      </div>
+
+      <div class="compare">
+        <h3>How we stack up</h3>
+        <table class="compare-table">
+          <thead>
+            <tr><th></th><th class="ct-us">Billable</th><th>Legacy invoicing suites</th><th>Spreadsheets &amp; Word</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Time to first invoice</td><td class="ct-us">60 seconds</td><td>Hours of setup</td><td>Every invoice is manual</td></tr>
+            <tr><td>Client reliability grades</td><td class="ct-us">✓ Built in</td><td>✗</td><td>✗</td></tr>
+            <tr><td>Predicted payment dates</td><td class="ct-us">✓ Per invoice</td><td>✗</td><td>✗</td></tr>
+            <tr><td>Cash-flow forecast</td><td class="ct-us">✓ 6 weeks ahead</td><td>Add-on / higher tier</td><td>DIY formulas</td></tr>
+            <tr><td>Follow-up emails written for you</td><td class="ct-us">✓ Tone-matched</td><td>Generic template</td><td>You, at 11pm</td></tr>
+            <tr><td>Accounting bloat you don't need</td><td class="ct-us">None</td><td>Plenty</td><td>—</td></tr>
+            <tr><td>Starting price</td><td class="ct-us">Free</td><td>$19–38/mo</td><td>"Free" (costs your weekend)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
   <!-- HOW IT WORKS -->
   <section class="how" id="how">
     <div class="container">
@@ -201,9 +262,9 @@
           <p class="price-sub">For working freelancers</p>
           <ul>
             <li>✓ Unlimited invoices</li>
-            <li>✓ Custom branding &amp; logo</li>
-            <li>✓ Multi-currency billing</li>
-            <li>✓ Overdue reminders</li>
+            <li>✓ <b>Payment Intelligence</b> — grades, predictions &amp; forecast</li>
+            <li>✓ Smart nudge emails</li>
+            <li>✓ Custom branding &amp; multi-currency</li>
             <li>✓ Priority support</li>
           </ul>
           <a href="app.html#signup" class="btn btn-primary btn-block">Start 14-day trial</a>
@@ -282,7 +343,7 @@ document.getElementById('navBurger').addEventListener('click', () => {
 const io = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
 }, { threshold: 0.12 });
-document.querySelectorAll('.feature-card, .step, .quote, .price-card, .section-head').forEach(el => {
+document.querySelectorAll('.feature-card, .step, .quote, .price-card, .section-head, .intel-card, .compare').forEach(el => {
   el.classList.add('reveal'); io.observe(el);
 });
 </script>
